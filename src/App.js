@@ -1,32 +1,38 @@
 import React from "react";
 
-// function App() {
-//   return (
-//     <>
-//       <label htmlFor="bar">Bar</label>
-//       <input
-//         type="text"
-//         onChange={() => {
-//           console.log("hi");
-//         }}
-//       />
-//     </>
-//   );
-// }
-
 const App = () => {
+  const profiles = [
+    {
+      name: "taro",
+      age: 10,
+    },
+    {
+      name: "hanako",
+      age: 12,
+    },
+    {
+      name: "hanako2",
+    },
+  ];
   return (
     <div>
-      <Cat />
-      <Cat />
-      <Cat />
-      <Cat />
+      {profiles.map((profile, index) => {
+        return <User key={index} name={profile.name} age={profile.age} />;
+      })}
     </div>
   );
 };
 
-const Cat = () => {
-  return <div>mewo</div>;
+const User = (props) => {
+  return (
+    <div>
+      i am {props.name} {props.age} years old
+    </div>
+  );
+};
+
+User.defaultProps = {
+  age: 1,
 };
 
 export default App;
