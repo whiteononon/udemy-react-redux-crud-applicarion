@@ -1,7 +1,17 @@
-import React from 'react';
+import React from "react";
 
 function App() {
-  return <div className="App"><h1>Hello world</h1></div>;
+  return (
+    <>
+      <label htmlFor="bar">Bar</label>
+      <input
+        type="text"
+        onChange={() => {
+          console.log("hi");
+        }}
+      />
+    </>
+  );
 }
 
 export default App;
