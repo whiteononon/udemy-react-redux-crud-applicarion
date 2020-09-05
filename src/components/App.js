@@ -1,31 +1,30 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
 
-const App = () => <Counter></Counter>;
+import { increment, decrement } from '../actions'
 
-class Counter extends Component {
-  constructor(props) {
-    // インスタンス生成時に実行
-    super(props);
-    console.log(this.state);
-    this.state = { count: 10 };
-  }
-  handlePlusButton = () => {
-    this.setState({ count: this.state.count + 1 });
-    // setstateでrenderが実行される
-  };
-  handleMinusButton = () => {
-    this.setState({ count: this.state.count - 1 });
-  };
+class App extends Component {
   render() {
-    console.log(this.state);
+    const props = this.props
+    console.log(props);
     return (
       <>
-        <div>{this.state.count}</div>
-        <button onClick={this.handlePlusButton}>+1</button>
-        <button onClick={this.handleMinusButton}>-1</button>
+        <div>value : {props.value}</div>
+        <button onClick={props.increment}>+1</button>
+        <button onClick={props.decrement}>-1</button>
       </>
     );
   }
 }
 
-export default App;
+//StoreにあるStateをPropsとして使えるようにする 
+const mapStateToProps = state => ({ value: state.count.value, value2: state.count2.value, })
+// PropsからActionをDispachできるようにする
+// const mapDispathToProps = dispatch => ({
+//   increment: () => dispatch(increment()),
+//   decrement: () => dispatch(decrement())
+// })
+
+const mapDispathToProps = ({ increment, decrement })
+
+export default connect(mapStateToProps, mapDispathToProps)(App)
