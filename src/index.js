@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+
 import './index.css';
-import App from './App';
+import reducer from './reducers/index'
+import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
+const store = createStore(reducer)
+// このStoreに全てのStateを集約
+
+// Providerを使用することでどのコンポーネントでも利用可能になる
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
