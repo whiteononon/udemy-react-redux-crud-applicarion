@@ -13,6 +13,11 @@ class EventsShow extends Component {
         this.onDeleteClick=this.onDeleteClick.bind(this)
     }
 
+    componentDidMount(){
+        const {id} = this.props.match.params
+        if (id) this.props.getEvent(id)
+    }
+
     renderField(field) {
         const { input, label, type, meta: { touched, error } } = field
         return (
@@ -24,7 +29,7 @@ class EventsShow extends Component {
     }
 
     async onSubmit(values){
-        await this.props.postEvents(values)
+        await this.props.putEvent(values)
         this.props.history.push('/')
     }
 
@@ -35,7 +40,7 @@ class EventsShow extends Component {
     }
 
     render() {
-        const {handleSubmit, pristine, submitting} = this.props
+        const {handleSubmit, pristine, submitting, invalid} = this.props
  
         return (
             // handleSubmitはredux-formの中で使用できる
@@ -45,7 +50,7 @@ class EventsShow extends Component {
                     <Field label="title" name="title" type="text" component={this.renderField} />
                     <Field label="body" name="body" type="text" component={this.renderField} />
                     <div>
-                        <input type="submit" disabled={pristine || submitting}></input>
+                        <input type="submit" disabled={pristine || submitting || invalid}></input>
                         <Link to="/">Cancel</Link>
                         <Link  to="/" onClick={this.onDeleteClick}>Delete</Link>
                     </div>
@@ -55,20 +60,28 @@ class EventsShow extends Component {
     }
 }
 
-// PropsからActionをDispacthできるようにする
-const mapDispathToProps = { deleteEvent };
 
 const validate = values => {
     const errors = {}
     if (!values.title) errors.title="Enter title"
     if (!values.body) errors.body="Enter body"
-        
+    
     return errors
-    }
+}
 
-export default connect(null, mapDispathToProps)(
+const mapStateToProps =(state, ownProps)=>{
+    const event = state.events[ownProps.match.params.id]
+    return {initialValues:event,state}
+}
+
+// PropsからActionをDispacthできるようにする
+const mapDispathToProps = { getEvent, deleteEvent, putEvent };
+
+
+export default connect(mapStateToProps, mapDispathToProps)(
     reduxForm({
         validate,
-        form: 'eventShowForm'
+        form: 'eventShowForm',
+        enableReinitialize: true
     })(EventsShow)
 );
