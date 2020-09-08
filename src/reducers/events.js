@@ -17,4 +17,4 @@ export default (events = {}, action) => {
         default:
             return events
     }
-}
+} 
